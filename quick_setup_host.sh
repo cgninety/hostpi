@@ -29,16 +29,33 @@ detect_ip() {
     echo "$ip"
 }
 
+# Function to validate IP address
+validate_ip() {
+    local ip=$1
+    if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # Get host IP
 DETECTED_IP=$(detect_ip)
 echo -e "${YELLOW}Detected Pi IP: $DETECTED_IP${NC}"
-read -p "Use detected IP or enter custom [detected/192.168.1.112]: " ip_choice
-if [[ "$ip_choice" == "192.168.1.112" ]]; then
-    HOST_IP="192.168.1.112"
-elif [[ -z "$ip_choice" || "$ip_choice" == "detected" ]]; then
+
+# Check if detected IP is 192.168.1.112 (expected host)
+if [[ "$DETECTED_IP" == "192.168.1.112" ]]; then
+    echo -e "${GREEN}✓ Correct host IP detected!${NC}"
     HOST_IP="$DETECTED_IP"
 else
-    HOST_IP="$ip_choice"
+    echo -e "${YELLOW}Expected host IP: 192.168.1.112${NC}"
+    read -p "Use detected IP ($DETECTED_IP) or use 192.168.1.112? [detected/expected]: " ip_choice
+    
+    if [[ "$ip_choice" == "expected" ]]; then
+        HOST_IP="192.168.1.112"
+    else
+        HOST_IP="$DETECTED_IP"
+    fi
 fi
 
 echo -e "${GREEN}Using Host IP: $HOST_IP${NC}"

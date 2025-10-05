@@ -30,13 +30,15 @@ detect_ip() {
 }
 
 # Get host IP
-HOST_IP=$(detect_ip)
-echo -e "${YELLOW}Detected Pi IP: $HOST_IP${NC}"
-read -p "Is this correct? (y/n) [y]: " confirm
-confirm=${confirm:-y}
-
-if [[ $confirm != "y" && $confirm != "Y" ]]; then
-    read -p "Enter the correct IP address: " HOST_IP
+DETECTED_IP=$(detect_ip)
+echo -e "${YELLOW}Detected Pi IP: $DETECTED_IP${NC}"
+read -p "Use detected IP or enter custom [detected/192.168.1.112]: " ip_choice
+if [[ "$ip_choice" == "192.168.1.112" ]]; then
+    HOST_IP="192.168.1.112"
+elif [[ -z "$ip_choice" || "$ip_choice" == "detected" ]]; then
+    HOST_IP="$DETECTED_IP"
+else
+    HOST_IP="$ip_choice"
 fi
 
 echo -e "${GREEN}Using Host IP: $HOST_IP${NC}"

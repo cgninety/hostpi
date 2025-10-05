@@ -64,12 +64,14 @@ fi
 echo -e "${GREEN}Using Host IP: $HOST_IP${NC}"
 echo ""
 
-# Check if running as pi user
-if [[ "$USER" != "pi" ]]; then
-    echo -e "${RED}This script should be run as the 'pi' user${NC}"
-    echo "Switch to pi user: su - pi"
+# Check if running as appropriate user (pi or host)
+if [[ "$USER" != "pi" && "$USER" != "host" ]]; then
+    echo -e "${RED}This script should be run as the 'pi' or 'host' user${NC}"
+    echo "Current user: $USER"
     exit 1
 fi
+
+echo -e "${GREEN}✓ Running as user: $USER${NC}"
 
 # Update system
 echo -e "${YELLOW}Updating system packages...${NC}"
@@ -81,6 +83,15 @@ if ! command -v git &> /dev/null; then
     echo -e "${YELLOW}Installing git...${NC}"
     sudo apt install -y git
 fi
+
+# Set install directory based on user
+if [[ "$USER" == "host" ]]; then
+    INSTALL_DIR="/home/host"
+else
+    INSTALL_DIR="/home/pi"
+fi
+
+echo -e "${BLUE}Installing to: $INSTALL_DIR${NC}"
 
 # Navigate to install directory
 cd "$INSTALL_DIR"

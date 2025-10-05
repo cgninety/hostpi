@@ -43,19 +43,22 @@ validate_ip() {
 DETECTED_IP=$(detect_ip)
 echo -e "${YELLOW}Detected Pi IP: $DETECTED_IP${NC}"
 
-# Check if detected IP is 192.168.1.112 (expected host)
+# Simple IP selection
 if [[ "$DETECTED_IP" == "192.168.1.112" ]]; then
     echo -e "${GREEN}✓ Correct host IP detected!${NC}"
     HOST_IP="$DETECTED_IP"
 else
     echo -e "${YELLOW}Expected host IP: 192.168.1.112${NC}"
-    read -p "Use detected IP ($DETECTED_IP) or use 192.168.1.112? [detected/expected]: " ip_choice
+    read -p "Use detected IP ($DETECTED_IP) or expected (192.168.1.112)? [d/e]: " choice
     
-    if [[ "$ip_choice" == "expected" ]]; then
-        HOST_IP="192.168.1.112"
-    else
-        HOST_IP="$DETECTED_IP"
-    fi
+    case $choice in
+        e|E|expected)
+            HOST_IP="192.168.1.112"
+            ;;
+        *)
+            HOST_IP="$DETECTED_IP"
+            ;;
+    esac
 fi
 
 echo -e "${GREEN}Using Host IP: $HOST_IP${NC}"

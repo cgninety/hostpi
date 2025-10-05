@@ -1,0 +1,53 @@
+# Host Configuration for IoT Sensor Network
+
+# MQTT Broker Settings
+mqtt:
+  broker_port: 8883
+  use_tls: true
+  cert_file: "/etc/ssl/certs/server.crt"
+  key_file: "/etc/ssl/private/server.key" 
+  ca_file: "/etc/ssl/certs/ca.crt"
+  max_clients: 50
+  keepalive: 60
+
+# Database Configuration  
+database:
+  path: "/var/lib/iot-sensor/sensors.db"
+  retention_days: 365
+  backup_enabled: true
+  backup_interval: 24  # hours
+
+# Web Dashboard Settings
+dashboard:
+  host: "0.0.0.0"
+  port: 5000
+  secret_key: "change-this-secret-key"
+  debug: false
+  
+# Alert Configuration
+alerts:
+  email_enabled: false
+  smtp_server: "smtp.gmail.com"
+  smtp_port: 587
+  email_user: "your-email@gmail.com"
+  email_password: "your-app-password"
+  
+  # Temperature thresholds (Celsius)
+  temp_threshold_high: 35.0
+  temp_threshold_low: 10.0
+  
+  # Humidity thresholds (%)
+  humidity_threshold_high: 80.0
+  humidity_threshold_low: 30.0
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  file: "/var/log/iot-sensor/host.log"
+  max_size: "10MB"
+  backup_count: 5
+
+# Network Configuration
+network:
+  host_ip: "192.168.1.112"
+  client_network: "192.168.1.0/24"

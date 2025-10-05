@@ -19,7 +19,7 @@ INSTALL_DIR="/home/pi"
 HOST_IP=""
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}  IoT Sensor Host Pi Quick Setup${NC}"
+echo -e "${BLUE}  IoT Sensor Host Pi Quick Setup v2${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 
